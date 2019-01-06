@@ -8,48 +8,46 @@
 
 import Foundation
 
+class Node<T> {
+    var value: T
+    var next: Node<T>? = nil
+    
+    init(value: T) {
+        self.value = value
+    }
+}
+
+///lnked list impl
 class queue<T> {
+    private var front: Node<T>? = nil
     
-    class Node<T> {
-        var value: T
-        var next: Node<T>? = nil
-        
-        init(value: T) {
-            self.value = value
-        }
-    }
-    
-    private var head: Node<T>? = nil
-    
-    private var tail: Node<T>? {
-        get {
-            var tailNode = head
-            
-            while tailNode != nil {
-                tailNode = tailNode?.next
-            }
-            
-            return tailNode
-        }
-    }
+    private var rear: Node<T>? = nil
     
     func enqueue(_ element: T) {
         let newNode = Node.init(value: element)
         
-        newNode.next = head
-        head = newNode
+        if(rear == nil) {
+        	front = newNode
+            rear = newNode
+            
+            return
+        }
+        
+        rear?.next = newNode
+        rear = newNode
         
     }
     
     func dequeue() -> T? {
-        guard let tail = tail else {
+        guard let front = front else {
             return nil
         }
         
-        let tailValue = tail.value
-        //remove tail
+        let frontValue = front.value
+        self.front = front.next
         
-        return tailValue
+        
+        return frontValue
     }
 }
 
@@ -58,12 +56,11 @@ extension queue: CustomStringConvertible {
     var description: String {
         var returnString = ""
         
-        var node = head
+        var tempNode = front
         
-        while node != nil {
-            returnString += String.init(describing: node!.value)
-            
-            node = node?.next
+        while let node = tempNode {
+            returnString += String.init(describing: node.value)
+            tempNode = node.next
         }
         
         return returnString
