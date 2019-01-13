@@ -12,6 +12,7 @@ print("Hello, World!")
 
 simulateQueue()
 simulateStack()
+simulateTree()
 
 ///parsejson
 /*
